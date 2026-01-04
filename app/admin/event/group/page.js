@@ -617,17 +617,22 @@ export default function GroupEventLeaderboardPage() {
                         ),
                       )}
                     <td className="px-6 py-4 text-center">
-                      <div className="flex flex-col gap-1">
-                        {Object.values(group.judgeWiseTotal).map(
-                          (total, idx) => (
-                            <span
-                              key={idx}
-                              className="text-xs font-bold text-gray-900 tabular-nums"
-                            >
-                              {parseFloat(total).toFixed(2)}
+                      <div className="flex flex-col gap-1 items-center">
+                        {eventMetadata.judgeIdList.map((judgeId, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center gap-2 justify-between w-16"
+                          >
+                            <span className="text-[10px] text-gray-400 font-medium">
+                              J{idx + 1}
                             </span>
-                          ),
-                        )}
+                            <span className="text-xs font-bold text-gray-900 tabular-nums text-right">
+                              {parseFloat(
+                                group.judgeWiseTotal[judgeId] || 0,
+                              ).toFixed(2)}
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center whitespace-nowrap">
