@@ -507,10 +507,10 @@ export default function GroupEventLeaderboardPage() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="sticky left-0 z-20 px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50 w-20">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     Rank
                   </th>
-                  <th className="sticky left-20 z-20 px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50 border-r border-gray-200 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     Group Information
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -523,7 +523,16 @@ export default function GroupEventLeaderboardPage() {
                           key={index}
                           className="px-2 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
                         >
-                          {criteria}
+                          {criteria.split('&').map((part, i, arr) => (
+                            <span key={i}>
+                              {part}
+                              {i < arr.length - 1 && (
+                                <>
+                                  &<br />
+                                </>
+                              )}
+                            </span>
+                          ))}
                         </th>
                       ),
                     )}
@@ -544,12 +553,12 @@ export default function GroupEventLeaderboardPage() {
                     key={index}
                     className="hover:bg-gray-50 transition-colors"
                   >
-                    <td className="sticky left-0 z-20 px-4 py-4 whitespace-nowrap bg-white w-20">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm font-bold text-gray-900">
                         #{index + 1}
                       </span>
                     </td>
-                    <td className="sticky left-20 z-20 px-6 py-4 whitespace-nowrap bg-white border-r border-gray-100 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-bold text-gray-900">
                         {group.district}
                       </div>
