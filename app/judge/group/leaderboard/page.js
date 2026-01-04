@@ -354,14 +354,12 @@ export default function GroupEventLeaderboardPage() {
                         key={i}
                         className="flex flex-col bg-gray-50 rounded p-2 text-xs border border-gray-100 flex-1 min-w-[100px]"
                       >
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-900 font-bold text-[10px]">
-                            {member.id}
-                          </span>
-                          <span className="text-gray-500 text-[10px]">
-                            {member.gender}
-                          </span>
-                        </div>
+                        <span className="text-gray-900 font-bold text-[10px] break-all">
+                          {member.id}
+                        </span>
+                        <span className="text-gray-500 text-[10px] text-right mt-1">
+                          {member.gender}
+                        </span>
                       </div>
                     ))}
                   </div>

@@ -161,6 +161,7 @@ export default function EventLeaderboardIndiPage() {
                       key={index}
                       className="flex justify-between items-center text-sm"
                     >
+                      <span className="text-gray-600">{key}</span>
                       <span className="font-semibold text-gray-900 bg-gray-50 px-2 py-0.5 rounded border border-gray-100">
                         {value} pts
                       </span>
