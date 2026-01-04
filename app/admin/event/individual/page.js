@@ -519,16 +519,7 @@ export default function EventLeaderboardIndiPage() {
                           key={index}
                           className="px-2 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
                         >
-                          {criteria.split('&').map((part, i, arr) => (
-                            <span key={i}>
-                              {part}
-                              {i < arr.length - 1 && (
-                                <>
-                                  &<br />
-                                </>
-                              )}
-                            </span>
-                          ))}
+                          {criteria}
                         </th>
                       ),
                     )}
