@@ -503,10 +503,10 @@ export default function EventLeaderboardIndiPage() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="sticky left-0 z-20 px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50 w-20">
                     Rank
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="sticky left-20 z-20 px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50 border-r border-gray-200 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
                     Student Information
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -543,12 +543,12 @@ export default function EventLeaderboardIndiPage() {
                       key={index}
                       className={`hover:bg-gray-50 transition-colors ${isSubstituted ? 'bg-red-50/50' : ''}`}
                     >
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="sticky left-0 z-20 px-4 py-4 whitespace-nowrap bg-white w-20">
                         <span className="text-sm font-bold text-gray-900">
                           #{index + 1}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="sticky left-20 z-20 px-6 py-4 bg-white border-r border-gray-100 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
                         {isSubstituted ? (
                           <div className="flex flex-col">
                             <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800 w-fit mb-1">
