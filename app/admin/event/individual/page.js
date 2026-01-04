@@ -499,7 +499,7 @@ export default function EventLeaderboardIndiPage() {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="hidden md:block overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -517,9 +517,18 @@ export default function EventLeaderboardIndiPage() {
                       (criteria, index) => (
                         <th
                           key={index}
-                          className="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                          className="px-2 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
                         >
-                          {criteria}
+                          {criteria.split('&').map((part, i, arr) => (
+                            <span key={i}>
+                              {part}
+                              {i < arr.length - 1 && (
+                                <>
+                                  &<br />
+                                </>
+                              )}
+                            </span>
+                          ))}
                         </th>
                       ),
                     )}
@@ -601,7 +610,7 @@ export default function EventLeaderboardIndiPage() {
                           (criteria, i1) => (
                             <td
                               key={i1}
-                              className="px-6 py-4 text-center"
+                              className="px-2 py-4 text-center"
                             >
                               <div className="flex flex-col gap-1">
                                 {eventMetadata.judgeIdList.map(
@@ -670,6 +679,130 @@ export default function EventLeaderboardIndiPage() {
                 })}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden flex flex-col gap-4 p-4 bg-gray-50">
+            {filteredParticipants.map((row, index) => {
+              const isSubstituted =
+                row.substitute && row.substitute[eventMetadata.name];
+              return (
+                <div
+                  key={index}
+                  className={`bg-white rounded-xl p-4 shadow-sm border ${
+                    isSubstituted
+                      ? 'border-red-200 bg-red-50/10'
+                      : 'border-gray-200'
+                  }`}
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
+                        #{index + 1}
+                      </span>
+                      {isSubstituted ? (
+                        <div className="flex flex-col">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800 w-fit mb-1">
+                            SUBSTITUTE
+                          </span>
+                          <span className="text-sm font-bold text-gray-900">
+                            {row.substitute[eventMetadata.name].newStudentName}
+                          </span>
+                        </div>
+                      ) : (
+                        <div>
+                          <h3 className="text-sm font-bold text-gray-900">
+                            {row.studentFullName ?? '-'}
+                          </h3>
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-lg font-black text-blue-600">
+                      {parseFloat(row.overallTotal).toFixed(2)}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-gray-600 mb-4">
+                    <div className="flex flex-col">
+                      <span className="text-gray-400">ID</span>
+                      <span className="font-medium">
+                        {isSubstituted
+                          ? row.substitute[eventMetadata.name].newStudentId ||
+                            'New ID'
+                          : row.studentId}
+                      </span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-gray-400">Status</span>
+                      <span
+                        className={`inline-flex w-fit items-center px-2 py-0.5 rounded text-[10px] font-bold border ${
+                          row.ATTENDEE_STATUS === 'Attended'
+                            ? 'bg-green-50 text-green-700 border-green-100'
+                            : 'bg-yellow-50 text-yellow-700 border-yellow-100'
+                        }`}
+                      >
+                        {row.ATTENDEE_STATUS === 'Attended'
+                          ? 'Present'
+                          : 'Absent'}
+                      </span>
+                    </div>
+                    <div className="flex flex-col col-span-2 mt-2">
+                      <span className="text-gray-400">Location</span>
+                      <span className="font-medium">
+                        {row.district ?? '-'} / {row.samithiName ?? '-'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                    <div className="flex justify-between items-center text-xs font-semibold text-gray-500 uppercase">
+                      <span>Judge Scores</span>
+                      <span>Total</span>
+                    </div>
+                    {eventMetadata.judgeIdList.map((judgeId, i) => (
+                      <div
+                        key={i}
+                        className="flex justify-between items-center text-xs"
+                      >
+                        <span className="text-gray-600">Judge {i + 1}</span>
+                        <span className="font-bold text-gray-900">
+                          {parseFloat(row.judgeWiseTotal[judgeId] || 0).toFixed(
+                            2,
+                          )}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {eventMetadata.judgeIdList.some(
+                    (jid) => row.comment[eventName][jid],
+                  ) && (
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase mb-2">
+                        Comments
+                      </p>
+                      <div className="space-y-2">
+                        {eventMetadata.judgeIdList.map((judgeId, i) => {
+                          const comment = row.comment[eventName][judgeId];
+                          if (!comment) return null;
+                          return (
+                            <div
+                              key={i}
+                              className="text-xs text-gray-600"
+                            >
+                              <span className="font-semibold text-gray-800">
+                                J{i + 1}:{' '}
+                              </span>{' '}
+                              {comment}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

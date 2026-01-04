@@ -503,7 +503,7 @@ export default function GroupEventLeaderboardPage() {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="hidden md:block overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -521,9 +521,18 @@ export default function GroupEventLeaderboardPage() {
                       (criteria, index) => (
                         <th
                           key={index}
-                          className="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                          className="px-2 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider"
                         >
-                          {criteria}
+                          {criteria.split('&').map((part, i, arr) => (
+                            <span key={i}>
+                              {part}
+                              {i < arr.length - 1 && (
+                                <>
+                                  &<br />
+                                </>
+                              )}
+                            </span>
+                          ))}
                         </th>
                       ),
                     )}
@@ -592,7 +601,7 @@ export default function GroupEventLeaderboardPage() {
                         (criteria, i1) => (
                           <td
                             key={i1}
-                            className="px-6 py-4 text-center"
+                            className="px-2 py-4 text-center"
                           >
                             <div className="flex flex-col gap-1">
                               {eventMetadata.judgeIdList.map((judgeId, i2) => (
@@ -660,6 +669,116 @@ export default function GroupEventLeaderboardPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden flex flex-col gap-4 p-4 bg-gray-50">
+            {groups.map((group, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-xl p-4 shadow-sm border border-gray-200"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
+                      #{index + 1}
+                    </span>
+                    <div>
+                      <h3 className="text-sm font-bold text-gray-900">
+                        {group.district ?? 'Unknown'}
+                      </h3>
+                      <p className="text-xs text-gray-500">
+                        {group.members.length} members
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-lg font-black text-blue-600">
+                    {parseFloat(group.overallTotal).toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="mb-4">
+                  <p className="text-xs font-semibold text-gray-500 uppercase mb-2">
+                    Members
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {group.members.map((member, i) => (
+                      <div
+                        key={i}
+                        className="flex flex-col bg-gray-50 rounded p-2 text-xs border border-gray-100 flex-1 min-w-[120px]"
+                      >
+                        <span className="font-medium text-gray-900 truncate">
+                          {member.name}
+                        </span>
+                        <div className="flex justify-between mt-1 items-center">
+                          <span className="text-gray-500 text-[10px]">
+                            {member.id}
+                          </span>
+                          <span
+                            className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold border ${
+                              member.ATTENDEE_STATUS === 'Attended'
+                                ? 'bg-green-50 text-green-700 border-green-100'
+                                : 'bg-yellow-50 text-yellow-700 border-yellow-100'
+                            }`}
+                          >
+                            {member.ATTENDEE_STATUS === 'Attended' ? 'P' : 'A'}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                  <div className="flex justify-between items-center text-xs font-semibold text-gray-500 uppercase">
+                    <span>Judge Scores</span>
+                    <span>Total</span>
+                  </div>
+                  {eventMetadata.judgeIdList.map((judgeId, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between items-center text-xs"
+                    >
+                      <span className="text-gray-600">Judge {i + 1}</span>
+                      <span className="font-bold text-gray-900">
+                        {parseFloat(group.judgeWiseTotal[judgeId] || 0).toFixed(
+                          2,
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {eventMetadata.judgeIdList.some(
+                  (jid) =>
+                    group.comment[eventName][jid] &&
+                    group.comment[eventName][jid] !== '-',
+                ) && (
+                  <div className="mt-3 pt-3 border-t border-gray-100">
+                    <p className="text-[10px] font-bold text-gray-400 uppercase mb-2">
+                      Comments
+                    </p>
+                    <div className="space-y-2">
+                      {eventMetadata.judgeIdList.map((judgeId, i) => {
+                        const comment = group.comment[eventName][judgeId];
+                        if (!comment || comment === '-') return null;
+                        return (
+                          <div
+                            key={i}
+                            className="text-xs text-gray-600"
+                          >
+                            <span className="font-semibold text-gray-800">
+                              J{i + 1}:{' '}
+                            </span>{' '}
+                            {comment}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
