@@ -632,7 +632,7 @@ export default function GroupEventLeaderboardPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex flex-col gap-2 min-w-[300px]">
+                      <div className="flex flex-col gap-2">
                         {eventMetadata.judgeIdList.map((judgeId, i) => {
                           const comment = group.comment[eventName][judgeId];
                           if (!comment || comment === '-') return null;
