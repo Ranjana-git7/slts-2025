@@ -229,35 +229,25 @@ export default function EventLeaderboardIndiPage() {
                             <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800 w-fit mb-1">
                               SUBSTITUTE
                             </span>
-                            <span className="text-sm font-bold text-gray-900">
-                              {
-                                row.substitute[eventMetadata.name]
-                                  .newStudentName
-                              }
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              Orig ID: {row.studentId}
-                            </span>
+                            <div className="flex flex-wrap gap-2">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                                {row.substitute[eventMetadata.name]
+                                  .newStudentId || 'New ID'}
+                              </span>
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-50 text-gray-700 border border-gray-100">
+                                {row.substitute[eventMetadata.name]
+                                  .newStudentGender || '-'}
+                              </span>
+                            </div>
                           </div>
                         ) : (
                           <div className="flex flex-col">
-                            <span className="text-sm font-bold text-gray-900">
-                              {row.studentFullName ?? '-'}
-                            </span>
-                            <div className="flex flex-wrap gap-2 mt-1">
+                            <div className="flex flex-wrap gap-2">
                               <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
                                 {row.studentId}
                               </span>
-                              <span
-                                className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border ${
-                                  row.ATTENDEE_STATUS === 'Attended'
-                                    ? 'bg-green-50 text-green-700 border-green-100'
-                                    : 'bg-yellow-50 text-yellow-700 border-yellow-100'
-                                }`}
-                              >
-                                {row.ATTENDEE_STATUS === 'Attended'
-                                  ? 'Present'
-                                  : 'Absent'}
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-50 text-gray-700 border border-gray-100">
+                                {row.gender || '-'}
                               </span>
                             </div>
                           </div>

@@ -177,6 +177,7 @@ export default function JudgeGroupPage() {
                   key={index}
                   className="rounded-2xl px-4 py-1 bg-gray-100 border"
                 >
+                  <h2 className="text-xl font-bold mt-4">Group {index + 1}</h2>
                   <div className="flex flex-row justify-between pb-4">
                     <div className="flex flex-col justify-between">
                       {val.map((participant, index) => (
@@ -191,54 +192,11 @@ export default function JudgeGroupPage() {
                                   {participant.studentId}
                                 </h2>
                               </div>
-                              <p className="text-sm">
-                                Participating in{' '}
-                                <span className="font-bold">
-                                  {participant.registeredEvents.length}
-                                </span>{' '}
-                                event
-                                {participant.registeredEvents.length > 1
-                                  ? 's'
-                                  : ''}
-                                .
-                              </p>
-
-                              <span
-                                className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                                  participant.ATTENDEE_STATUS === 'Attended'
-                                    ? 'bg-green-100 text-green-700 border border-green-300'
-                                    : 'bg-yellow-100 text-yellow-700 border border-yellow-300'
-                                }`}
-                              >
-                                {participant.ATTENDEE_STATUS === 'Attended'
-                                  ? 'Present'
-                                  : 'Yet to Check In'}
-                              </span>
-
-                              {/* Other registered events (excluding current) */}
-                              {participant.registeredEvents.filter(
-                                (ev) => ev !== eventMetadata.name,
-                              ).length > 0 && (
-                                <p className="text-sm mb-3 text-gray-600">
-                                  Also participating in{' '}
-                                  <span className="px-2 py-0.5 rounded-full bg-violet-50 font-semibold text-violet-700 border-2 border-violet-300 text-xs">
-                                    {participant.registeredEvents
-                                      .filter((ev) => ev !== eventMetadata.name)
-                                      .join(', ')}
-                                  </span>
-                                </p>
-                              )}
-
                               <p className="text-xs">
-                                {participant.gender ?? '-'} -{' '}
-                                {participant.dateOfBirth ?? '-'}
-                              </p>
-                              <p className="text-xs rounded-2xl w-fit">
-                                {participant.studentGroup ?? '-'}
+                                {participant.gender ?? '-'}
                               </p>
                             </div>
                           </div>
-                          {/* <hr /> */}
                         </div>
                       ))}
                     </div>

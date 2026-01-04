@@ -44,8 +44,8 @@ export default function GroupEventLeaderboardPage() {
             };
           }
           acc[key].members.push({
-            name: participant.studentFullName || 'Unknown',
             id: participant.studentId || 'Unknown ID',
+            gender: participant.gender || '-',
           });
           return acc;
         }, {});
@@ -209,10 +209,10 @@ export default function GroupEventLeaderboardPage() {
                     Rank
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    District Information
+                    Group Information
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Group Members
+                    Member Details
                   </th>
                   <th className="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     Judge Wise
@@ -238,7 +238,7 @@ export default function GroupEventLeaderboardPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-bold text-gray-900">
-                        {group.district ?? 'Unknown'}
+                        Group {index + 1}
                       </div>
                       <div className="text-xs text-gray-500">
                         {group.members.length} members
@@ -251,12 +251,12 @@ export default function GroupEventLeaderboardPage() {
                             key={i}
                             className="flex flex-col sm:flex-row sm:items-center gap-2"
                           >
-                            <span className="text-sm font-medium text-gray-900 whitespace-nowrap">
-                              {member.name}
-                            </span>
                             <div className="flex items-center gap-1">
                               <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
                                 {member.id}
+                              </span>
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-50 text-gray-700 border border-gray-100">
+                                {member.gender}
                               </span>
                             </div>
                           </div>
