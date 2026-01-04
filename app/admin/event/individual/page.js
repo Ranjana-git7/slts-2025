@@ -737,7 +737,7 @@ export default function EventLeaderboardIndiPage() {
                           : row.studentId}
                       </span>
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col items-end text-right">
                       <span className="text-gray-400">Status</span>
                       <span
                         className={`inline-flex w-fit items-center px-2 py-0.5 rounded text-[10px] font-bold border ${
