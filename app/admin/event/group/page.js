@@ -636,7 +636,7 @@ export default function GroupEventLeaderboardPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex flex-col gap-2 max-w-xs">
+                      <div className="flex flex-col gap-2 min-w-[300px]">
                         {eventMetadata.judgeIdList.map((judgeId, i) => {
                           const comment = group.comment[eventName][judgeId];
                           if (!comment || comment === '-') return null;
@@ -648,7 +648,7 @@ export default function GroupEventLeaderboardPage() {
                               <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">
                                 Judge {i + 1}
                               </p>
-                              <p className="text-xs text-gray-700 leading-relaxed">
+                              <p className="text-xs text-gray-700 leading-relaxed whitespace-normal">
                                 {comment}
                               </p>
                             </div>
