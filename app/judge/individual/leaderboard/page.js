@@ -161,7 +161,6 @@ export default function EventLeaderboardIndiPage() {
                       key={index}
                       className="flex justify-between items-center text-sm"
                     >
-                      <span className="text-gray-600">{key}</span>
                       <span className="font-semibold text-gray-900 bg-gray-50 px-2 py-0.5 rounded border border-gray-100">
                         {value} pts
                       </span>
@@ -188,7 +187,7 @@ export default function EventLeaderboardIndiPage() {
             <h2 className="text-xl font-bold text-gray-900">Leaderboard</h2>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="hidden md:block overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -305,6 +304,110 @@ export default function EventLeaderboardIndiPage() {
                 })}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden flex flex-col gap-4 p-4 bg-gray-50">
+            {filteredParticipants.map((row, index) => {
+              const isSubstituted =
+                row.substitute && row.substitute[eventMetadata.name];
+              return (
+                <div
+                  key={index}
+                  className={`bg-white rounded-xl p-4 shadow-sm border ${
+                    isSubstituted
+                      ? 'border-red-200 bg-red-50/10'
+                      : 'border-gray-200'
+                  }`}
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
+                        #{index + 1}
+                      </span>
+                      {isSubstituted ? (
+                        <div className="flex flex-col">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800 w-fit mb-1">
+                            SUBSTITUTE
+                          </span>
+                          <div className="flex flex-wrap gap-2">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                              {row.substitute[eventMetadata.name]
+                                .newStudentId || 'New ID'}
+                            </span>
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-50 text-gray-700 border border-gray-100">
+                              {row.substitute[eventMetadata.name]
+                                .newStudentGender || '-'}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-1">
+                          <div className="flex flex-wrap gap-2">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                              {row.studentId}
+                            </span>
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-50 text-gray-700 border border-gray-100">
+                              {row.gender || '-'}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-lg font-black text-blue-600">
+                      {parseFloat(row.overallTotal).toFixed(2)}
+                    </span>
+                  </div>
+
+                  <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                    <div className="flex justify-between items-center text-xs font-semibold text-gray-500 uppercase">
+                      <span>Judge Scores</span>
+                      <span>Total</span>
+                    </div>
+                    {eventMetadata.judgeIdList.map((judgeId, i) => (
+                      <div
+                        key={i}
+                        className="flex justify-between items-center text-xs"
+                      >
+                        <span className="text-gray-600">Judge {i + 1}</span>
+                        <span className="font-bold text-gray-900">
+                          {parseFloat(row.judgeWiseTotal[judgeId] || 0).toFixed(
+                            2,
+                          )}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {eventMetadata.judgeIdList.some(
+                    (jid) => row.comment[eventName][jid],
+                  ) && (
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase mb-2">
+                        Comments
+                      </p>
+                      <div className="space-y-2">
+                        {eventMetadata.judgeIdList.map((judgeId, i) => {
+                          const comment = row.comment[eventName][judgeId];
+                          if (!comment) return null;
+                          return (
+                            <div
+                              key={i}
+                              className="text-xs text-gray-600"
+                            >
+                              <span className="font-semibold text-gray-800">
+                                J{i + 1}:{' '}
+                              </span>{' '}
+                              {comment}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
