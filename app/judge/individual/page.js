@@ -355,27 +355,17 @@ export default function JudgePage() {
                     participant.substitute[eventMetadata.name] ? (
                       <div>
                         <p className="text-xs font-semibold text-[#32350b] rounded-2xl w-fit">
-                          Substituted Student - Original{' '}
-                          <span className="font-bold">
-                            {participant.studentId}
-                          </span>
+                          Substituted Student
                         </p>
                         <h2 className="text-xl font-bold">
                           {
                             participant.substitute[eventMetadata.name]
-                              .newStudentName
+                              .newStudentId
                           }
                         </h2>
                         <p className="text-xs">
                           {participant.substitute[eventMetadata.name]
                             .newStudentGender ?? '-'}{' '}
-                          -{' '}
-                          {participant.substitute[eventMetadata.name]
-                            .newStudentDOB ?? '-'}
-                        </p>
-                        <p className="text-xs mt-2 font-bold bg-[#bad1ff] text-[#090e2d] p-1 px-2 rounded-2xl w-fit">
-                          {participant.substitute[eventMetadata.name]
-                            .newStudentGroup ?? '-'}
                         </p>
                       </div>
                     ) : (
@@ -385,61 +375,8 @@ export default function JudgePage() {
                             {participant.studentId}
                           </h2>
                         </div>
-                        <p className="text-sm">
-                          Participating in{' '}
-                          <span className="font-bold">
-                            {participant.registeredEvents.length}
-                          </span>{' '}
-                          event
-                          {participant.registeredEvents.length > 1 ? 's' : ''}.
-                        </p>
-
-                        <span
-                          className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                            participant.ATTENDEE_STATUS === 'Attended'
-                              ? 'bg-green-100 text-green-700 border border-green-300'
-                              : 'bg-yellow-100 text-yellow-700 border border-yellow-300'
-                          }`}
-                        >
-                          {participant.ATTENDEE_STATUS === 'Attended'
-                            ? 'Present'
-                            : 'Yet to Check In'}
-                        </span>
-
-                        {/* Other registered events (excluding current) */}
-                        {participant.registeredEvents.filter(
-                          (ev) => ev !== eventMetadata.name,
-                        ).length > 0 && (
-                          <div className="text-sm mb-3 text-gray-600">
-                            <span className="mr-1">Also participating in</span>
-                            <span className="inline-flex flex-wrap gap-1">
-                              {participant.registeredEvents
-                                .filter((ev) => ev !== eventMetadata.name)
-                                .map((ev, i) => (
-                                  <span
-                                    key={i}
-                                    className="px-2 py-0.5 rounded-full bg-violet-50 font-semibold text-violet-700 border-2 border-violet-300 text-xs"
-                                  >
-                                    {ev}
-                                  </span>
-                                ))}
-                            </span>
-                          </div>
-                        )}
-
-                        {participant.registeredEvents.some((x) =>
-                          x.includes('GROUP'),
-                        ) && (
-                          <p className="text-xs">
-                            Also in a group event. Please evaluate first.
-                          </p>
-                        )}
                         <p className="text-xs text-gray-700">
-                          {participant.gender ?? '-'} -{' '}
-                          {participant.dateOfBirth ?? '-'}
-                        </p>
-                        <p className="text-xs mt-2 font-bold bg-[#bad1ff] text-[#090e2d] p-1 px-2 rounded-2xl w-fit">
-                          {participant.studentGroup ?? '-'}
+                          {participant.gender ?? '-'}
                         </p>
                       </div>
                     )}

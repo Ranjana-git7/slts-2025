@@ -101,22 +101,24 @@ export default function EventLeaderboardIndiPage() {
     eventMetadata &&
     participants &&
     filteredParticipants ? (
-    <>
-      <div className="flex flex-col justify-center w-screen min-w-[95%] ml-auto mr-auto">
-        <div className="rounded-2xl p-4 m-2 bg-white border overflow-x-auto justify-between flex flex-col md:flex-row">
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-bold">Welcome, {user.name}</h1>
-            <p className="text-gray-700 mt-2">{user.email}</p>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Welcome, {user.name}
+            </h1>
+            <p className="text-gray-500">{user.email}</p>
           </div>
-          <div className="flex flex-row mt-2 md:mt-0">
+          <div className="flex gap-3 w-full md:w-auto">
             <button
-              className="bg-[#fffece] text-[#2c350b] font-bold px-4 py-1 rounded-xl mr-2"
+              className="flex-1 md:flex-none bg-yellow-100 text-yellow-800 hover:bg-yellow-200 font-semibold px-4 py-2 rounded-xl transition-colors"
               onClick={() => router.push('/judge/individual')}
             >
               Dashboard
             </button>
             <button
-              className="bg-[#ffcece] text-[#350b0b] font-bold px-4 py-1 rounded-xl"
+              className="flex-1 md:flex-none bg-red-100 text-red-800 hover:bg-red-200 font-semibold px-4 py-2 rounded-xl transition-colors"
               onClick={() => {
                 auth.signOut();
                 secureLocalStorage.clear();
@@ -128,176 +130,295 @@ export default function EventLeaderboardIndiPage() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center w-fit min-w-[95%] ml-auto mr-auto">
-          <div className="rounded-2xl p-4 bg-white border overflow-x-auto">
-            <h1 className="text-xl font-bold">{eventMetadata.name}</h1>
-            <p className="text-md">{participants.length} Participants</p>
-            <div className="flex flex-row flex-wrap gap-1 mt-1">
-              {eventMetadata.group.map((group, index) => (
-                <p
-                  key={index}
-                  className="bg-gray-200 text-gray-800 font-semibold px-2 py-1 rounded-xl w-fit"
-                >
-                  {group}
-                </p>
-              ))}
+        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
+          <div className="flex flex-col md:flex-row justify-between gap-6">
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                {eventMetadata.name}
+              </h2>
+              <p className="text-gray-500 mb-4">
+                {participants.length} Participants enrolled
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {eventMetadata.group.map((group, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 border border-gray-200"
+                  >
+                    {group}
+                  </span>
+                ))}
+              </div>
             </div>
-
-            {/* Evaluation Criteria */}
-            <h2 className="text-xl font-bold mt-6">Evaluation Criteria</h2>
-            <table className="table-auto w-full">
-              <thead>
-                <tr>
-                  <th className="border px-4 py-2">Criteria</th>
-                  <th className="border px-4 py-2">Max Marks</th>
-                </tr>
-              </thead>
-              <tbody>
+            <div className="w-full md:w-80">
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                Evaluation Criteria
+              </h3>
+              <div className="space-y-2">
                 {Object.entries(eventMetadata.evalCriteria).map(
                   ([key, value], index) => (
-                    <tr key={index}>
-                      <td className="border px-4 py-2">{key}</td>
-                      <td className="border px-4 py-2">{value}</td>
-                    </tr>
+                    <div
+                      key={index}
+                      className="flex justify-between items-center text-sm"
+                    >
+                      <span className="text-gray-600">{key}</span>
+                      <span className="font-semibold text-gray-900 bg-gray-50 px-2 py-0.5 rounded border border-gray-100">
+                        {value} pts
+                      </span>
+                    </div>
                   ),
                 )}
-                <tr>
-                  <td className="border px-4 py-2 font-semibold">Total</td>
-                  <td className="border px-4 py-2 font-semibold">
+                <div className="pt-2 mt-2 border-t border-gray-100 flex justify-between items-center font-bold text-gray-900">
+                  <span>Total Maximum Marks</span>
+                  <span className="text-blue-600">
                     {Object.values(eventMetadata.evalCriteria).reduce(
                       (a, b) => a + b,
                       0,
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    )}{' '}
+                    pts
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col justify-center w-fit min-w-[95%] ml-auto mr-auto">
-          <div className="rounded-2xl p-4 my-4 bg-white border overflow-x-auto">
-            <h1 className="text-2xl font-bold">Leaderboard</h1>
-            <table className="table-auto w-full mt-4">
-              <thead>
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="p-6 border-b border-gray-100">
+            <h2 className="text-xl font-bold text-gray-900">Leaderboard</h2>
+          </div>
+
+          <div className="hidden md:block overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
                 <tr>
-                  <th className="border px-4 py-2">Student</th>
-                  {/* {eventMetadata.evalCriteria && Object.keys(eventMetadata.evalCriteria).map((criteria, index) => (
-                                        <th key={index} className="border px-4 py-2">{criteria}</th>
-                                    ))} */}
-                  <th className="border px-4 py-2">Judge Wise Total</th>
-                  <th className="border px-4 py-2">Total</th>
-                  <th className="border px-4 py-2">Comments</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    Rank
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    Student Information
+                  </th>
+                  <th className="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    Judge Wise
+                  </th>
+                  <th className="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    Total
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    Comments
+                  </th>
                 </tr>
               </thead>
-              <tbody>
-                {filteredParticipants.map((row, index) => (
-                  <tr key={index}>
-                    <td
-                      className={
-                        'px-4 py-2 border max-w-40' +
-                        (row.substitute && row.substitute[eventMetadata.name]
-                          ? ' bg-[#ffcece]'
-                          : '')
-                      }
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredParticipants.map((row, index) => {
+                  const isSubstituted =
+                    row.substitute && row.substitute[eventMetadata.name];
+                  return (
+                    <tr
+                      key={index}
+                      className={`hover:bg-gray-50 transition-colors ${isSubstituted ? 'bg-red-50/50' : ''}`}
                     >
-                      {row.substitute && row.substitute[eventMetadata.name] ? (
-                        <div>
-                          <p className="text-xs font-semibold text-[#32350b] rounded-2xl w-fit">
-                            Substituted Student - Original{' '}
-                            <span className="font-bold">{row.studentId}</span>
-                          </p>
-                          <p className="font-bold">
-                            {row.substitute[eventMetadata.name].newStudentName}
-                          </p>
-                          <p className="text-xs">
-                            {row.substitute[eventMetadata.name]
-                              .newStudentGender ?? '-'}{' '}
-                            -{' '}
-                            {row.substitute[eventMetadata.name].newStudentDOB ??
-                              '-'}
-                          </p>
-                          <p className="text-xs mt-2 font-bold bg-[#bad1ff] text-[#090e2d] p-1 px-2 rounded-2xl w-fit">
-                            {row.substitute[eventMetadata.name]
-                              .newStudentGroup ?? '-'}
-                          </p>
-                        </div>
-                      ) : (
-                        <div>
-                          <div className="flex flex-wrap items-center gap-1">
-                            <p className="text-xs font-bold bg-[#c4ffc2] text-[#07210d] p-1 px-2 rounded-2xl w-fit">
-                              {row.studentId ?? '-'}
-                            </p>
-
-                            <span
-                              className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-                                row.ATTENDEE_STATUS === 'Attended'
-                                  ? 'bg-green-100 text-green-700 border border-green-300'
-                                  : 'bg-yellow-100 text-yellow-700 border border-yellow-300'
-                              }`}
-                            >
-                              {row.ATTENDEE_STATUS === 'Attended'
-                                ? 'Present'
-                                : 'Yet to Check In'}
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm font-bold text-gray-900">
+                          #{index + 1}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        {isSubstituted ? (
+                          <div className="flex flex-col">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800 w-fit mb-1">
+                              SUBSTITUTE
                             </span>
-
-                            <p className="text-xs font-bold bg-[#bad1ff] text-[#090e2d] p-1 px-2 rounded-2xl w-fit">
-                              {row.studentGroup ?? '-'}
-                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                                {row.substitute[eventMetadata.name]
+                                  .newStudentId || 'New ID'}
+                              </span>
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-50 text-gray-700 border border-gray-100">
+                                {row.substitute[eventMetadata.name]
+                                  .newStudentGender || '-'}
+                              </span>
+                            </div>
                           </div>
-                          <p className="px-2 text-xs pt-2">
-                            {row.gender ?? '-'} - {row.dateOfBirth ?? '-'}
-                          </p>
+                        ) : (
+                          <div className="flex flex-col">
+                            <div className="flex flex-wrap gap-2">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                                {row.studentId}
+                              </span>
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-50 text-gray-700 border border-gray-100">
+                                {row.gender || '-'}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <div className="flex flex-col gap-1">
+                          {Object.values(row.judgeWiseTotal).map(
+                            (total, idx) => (
+                              <span
+                                key={idx}
+                                className="text-xs font-bold text-gray-900 tabular-nums"
+                              >
+                                {parseFloat(total).toFixed(2)}
+                              </span>
+                            ),
+                          )}
                         </div>
-                      )}
-                    </td>
-                    {/* {eventMetadata.evalCriteria && Object.keys(eventMetadata.evalCriteria).map((criteria, i1) => (
-                                            <td key={i1} className="px-4 py-2 border">
-                                                {eventMetadata.judgeIdList.map((judgeId, i2) => (
-                                                    <p key={i2} className="text-xs">{row.score[(eventName)][judgeId][criteria]}</p>
-                                                ))}
-                                            </td>
-                                        ))} */}
-                    <td className="px-4 py-2 border font-bold">
-                      {Object.values(row.judgeWiseTotal).map((total, index) => (
-                        <p
-                          key={index}
-                          className="text-xs"
-                        >
-                          {parseFloat(total).toFixed(2)}
-                        </p>
-                      ))}
-                    </td>
-                    <td className="px-4 py-2 border font-bold">
-                      {parseFloat(row.overallTotal).toFixed(2)}
-                    </td>
-                    <td className="px-4 py-2 border">
-                      <div className="flex flex-col">
-                        {eventMetadata.judgeIdList.map((judgeId, i) => (
-                          <div
-                            key={i}
-                            className="flex flex-col"
-                          >
-                            <p className="text-xs">
-                              {row.comment[eventName][judgeId] == ''
-                                ? '-'
-                                : row.comment[eventName][judgeId]}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="px-6 py-4 text-center whitespace-nowrap">
+                        <span className="text-sm font-black text-blue-600 tabular-nums">
+                          {parseFloat(row.overallTotal).toFixed(2)}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex flex-col gap-2 max-w-xs">
+                          {eventMetadata.judgeIdList.map((judgeId, i) => {
+                            const comment = row.comment[eventName][judgeId];
+                            if (!comment) return null;
+                            return (
+                              <div
+                                key={i}
+                                className="bg-gray-50 p-2 rounded-lg border border-gray-100"
+                              >
+                                <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">
+                                  Judge {i + 1}
+                                </p>
+                                <p className="text-xs text-gray-700 leading-relaxed">
+                                  {comment}
+                                </p>
+                              </div>
+                            );
+                          })}
+                          {!eventMetadata.judgeIdList.some(
+                            (jid) => row.comment[eventName][jid],
+                          ) && (
+                            <span className="text-gray-400 italic text-xs">
+                              No comments
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden flex flex-col gap-4 p-4 bg-gray-50">
+            {filteredParticipants.map((row, index) => {
+              const isSubstituted =
+                row.substitute && row.substitute[eventMetadata.name];
+              return (
+                <div
+                  key={index}
+                  className={`bg-white rounded-xl p-4 shadow-sm border ${
+                    isSubstituted
+                      ? 'border-red-200 bg-red-50/10'
+                      : 'border-gray-200'
+                  }`}
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
+                        #{index + 1}
+                      </span>
+                      {isSubstituted ? (
+                        <div className="flex flex-col">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800 w-fit mb-1">
+                            SUBSTITUTE
+                          </span>
+                          <div className="flex flex-wrap gap-2">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                              {row.substitute[eventMetadata.name]
+                                .newStudentId || 'New ID'}
+                            </span>
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-50 text-gray-700 border border-gray-100">
+                              {row.substitute[eventMetadata.name]
+                                .newStudentGender || '-'}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-1">
+                          <div className="flex flex-wrap gap-2">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                              {row.studentId}
+                            </span>
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-50 text-gray-700 border border-gray-100">
+                              {row.gender || '-'}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-lg font-black text-blue-600">
+                      {parseFloat(row.overallTotal).toFixed(2)}
+                    </span>
+                  </div>
+
+                  <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                    <div className="flex justify-between items-center text-xs font-semibold text-gray-500 uppercase">
+                      <span>Judge Scores</span>
+                      <span>Total</span>
+                    </div>
+                    {eventMetadata.judgeIdList.map((judgeId, i) => (
+                      <div
+                        key={i}
+                        className="flex justify-between items-center text-xs"
+                      >
+                        <span className="text-gray-600">Judge {i + 1}</span>
+                        <span className="font-bold text-gray-900">
+                          {parseFloat(row.judgeWiseTotal[judgeId] || 0).toFixed(
+                            2,
+                          )}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {eventMetadata.judgeIdList.some(
+                    (jid) => row.comment[eventName][jid],
+                  ) && (
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase mb-2">
+                        Comments
+                      </p>
+                      <div className="space-y-2">
+                        {eventMetadata.judgeIdList.map((judgeId, i) => {
+                          const comment = row.comment[eventName][judgeId];
+                          if (!comment) return null;
+                          return (
+                            <div
+                              key={i}
+                              className="text-xs text-gray-600"
+                            >
+                              <span className="font-semibold text-gray-800">
+                                J{i + 1}:{' '}
+                              </span>{' '}
+                              {comment}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
-    </>
+    </div>
   ) : (
-    <div className="flex h-screen items-center justify-center">
-      <p className="text-xl font-semibold">Loading...</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="flex flex-col items-center gap-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <p className="text-gray-500 font-medium">Loading leaderboard...</p>
+      </div>
     </div>
   );
 }
