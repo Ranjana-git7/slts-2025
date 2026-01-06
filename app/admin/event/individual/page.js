@@ -92,6 +92,18 @@ export default function EventLeaderboardIndiPage() {
 
           // Sort _data[0] based on overallTotal
           _data[0].sort((a, b) => b.overallTotal - a.overallTotal);
+          // -------- TIE DETECTION (Top 5 boundary) --------
+const cutoffRank = 5;
+let tieScore = null;
+
+if (_data[0].length >= cutoffRank) {
+  tieScore = _data[0][cutoffRank - 1]?.overallTotal ?? null;
+}
+
+_data[0].forEach((p) => {
+  p.isTie = tieScore !== null && p.overallTotal === tieScore;
+});
+
 
           setEventMetadata(_data[1]);
 
@@ -458,7 +470,15 @@ export default function EventLeaderboardIndiPage() {
         {/* Leaderboard Card */}
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <h2 className="text-xl font-bold text-gray-900">Leaderboard</h2>
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-3">
+  Leaderboard
+  {filteredParticipants.some(p => p.isTie) && (
+    <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">
+      ⚠ Tie detected around Top 5
+    </span>
+  )}
+</h2>
+
             <div className="flex gap-2 w-full sm:w-auto">
               <button
                 onClick={exportForCert}
@@ -550,8 +570,11 @@ export default function EventLeaderboardIndiPage() {
                   return (
                     <tr
                       key={index}
-                      className={`hover:bg-gray-50 transition-colors ${isSubstituted ? 'bg-red-50/50' : ''}`}
-                    >
+                       className={`hover:bg-gray-50 transition-colors 
+    ${isSubstituted ? 'bg-red-50/50' : ''}
+    ${row.isTie ? 'bg-yellow-50 border-l-4 border-yellow-400' : ''}
+  `}
+>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="text-sm font-bold text-gray-900">
                           #{index + 1}
@@ -694,16 +717,15 @@ export default function EventLeaderboardIndiPage() {
               return (
                 <div
                   key={index}
-                  className={`bg-white rounded-xl p-4 shadow-sm border ${
-                    isSubstituted
-                      ? 'border-red-200 bg-red-50/10'
-                      : 'border-gray-200'
-                  }`}
-                >
+                   className={`bg-white rounded-xl p-4 shadow-sm border 
+    ${row.isTie ? 'border-yellow-400 bg-yellow-50/30' : 'border-gray-200'}
+    ${isSubstituted ? 'border-red-200 bg-red-50/10' : ''}
+  `}
+>
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex items-center gap-2">
                       <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
-                        #{index + 1}
+                        #{index + 1}{row.isTie && <span className="text-xs text-yellow-700">(Tie)</span>}
                       </span>
                       {isSubstituted ? (
                         <div className="flex flex-col">
