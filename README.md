@@ -91,20 +91,20 @@ Laptop View for Dashboard Page
 
 8. Create a `.env` file in the root directory of the project in the below format and enter proper values. The values will be available in firebase console settings of the web app created.
 
-    ```env
-    NEXT_PUBLIC_FIREBASE_API_KEY=""
-    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=""
-    NEXT_PUBLIC_FIREBASE_PROJECT_ID=""
-    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=""
-    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=""
-    NEXT_PUBLIC_APP_ID=""
-    ```
+   ```env
+   NEXT_PUBLIC_FIREBASE_API_KEY=""
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=""
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=""
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=""
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=""
+   NEXT_PUBLIC_APP_ID=""
+   ```
 
 9. In the root directory, run the below command to install dependencies.
 
-    ```sh
-    npm i
-    ```
+   ```sh
+   npm i
+   ```
 
 10. In the root directory, run the below command to populate your Firestore database and auth with test data.
 
